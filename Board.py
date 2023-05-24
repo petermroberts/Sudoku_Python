@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import *
-
-from  Controller import Controller
+from Controller import *
 
 class App(tk.Tk):
     def __init__(self):
@@ -9,7 +8,7 @@ class App(tk.Tk):
 
         self.title("Sudoku")
         self.minsize(width=500, height=580)
-        self.geometry('510x610+100+50')
+        self.geometry('530x630+100+50')
         self.configure(background='#87CEEB')
 
         controller = Controller.instance()
@@ -39,9 +38,10 @@ class NumberBarFrame(tk.Frame):
             self.number_buttons.append(button)
 
     def on_button_click(self, number):
-        self.controller.number_selected = number
-        
-
+        if self.controller.number_selected == None:
+            self.controller.number_selected = number
+        else:
+            self.controller.number_selected = None
 
 class BoardFrame(tk.Frame):
     def __init__(self, parent):
@@ -80,14 +80,28 @@ class SectionFrame(tk.Frame):
 #todo make the cells buttons ONLY when a number is selected
 
 class CellButton(tk.Button):
+
+    controller = Controller.instance()
+
     def __init__(self, parent):
         super().__init__(parent)
 
         self.frame = Frame(self, width=50, height=50, borderwidth=1, relief="solid")
         self.frame.grid(row=0, column=0, padx=0, pady=0)
 
-        self.button = Button(self.frame, width=5, height=3)
+        self.cell_text = StringVar()
+        self.cell_text.set(' ')
+
+        self.button = Button(self.frame, width=5, height=3, textvariable=self.cell_text)
+        self.button.configure(command=self.on_button_click)
         self.button.pack()
+
+    def on_button_click(self):
+        if self.controller.number_selected != None:
+            self.cell_text.set(self.controller.number_selected)
+        else:
+            self.cell_text.set(' ')
+
 
 if __name__ == "__main__":
     app = App()
