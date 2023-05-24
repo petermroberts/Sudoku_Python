@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import *
 
+from  Controller import Controller
+
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -10,6 +12,8 @@ class App(tk.Tk):
         self.geometry('510x610+100+50')
         self.configure(background='#87CEEB')
 
+        controller = Controller.instance()
+
         self.board_frame = BoardFrame(self)
         self.board_frame.grid(row=0, column=0, padx=10, pady=10)
 
@@ -17,6 +21,9 @@ class App(tk.Tk):
         self.numberBar_frame.grid(row=1, column=0, padx=10, pady=10)
 
 class NumberBarFrame(tk.Frame):
+
+    controller = Controller.instance()
+
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -32,7 +39,7 @@ class NumberBarFrame(tk.Frame):
             self.number_buttons.append(button)
 
     def on_button_click(self, number):
-        print("Button", number, "Clicked!")
+        self.controller.number_selected = number
         
 
 
@@ -70,7 +77,7 @@ class SectionFrame(tk.Frame):
                 row.append(button)
             self.cells.append(row)
                 
-        
+#todo make the cells buttons ONLY when a number is selected
 
 class CellButton(tk.Button):
     def __init__(self, parent):
