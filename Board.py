@@ -7,7 +7,7 @@ class App(tk.Tk):
 
         self.title("Sudoku")
         self.minsize(width=500, height=580)
-        self.geometry('500x580+100+50')
+        self.geometry('510x610+100+50')
         self.configure(background='#87CEEB')
 
         self.board_frame = BoardFrame(self)
@@ -65,19 +65,22 @@ class SectionFrame(tk.Frame):
         for i in range(3):
             row = []
             for j in range(3):
-                frame = CellFrame(self.frame)
-                frame.grid(row=i, column=j, padx=0, pady=0)
-                row.append(frame)
+                button = CellButton(self.frame)
+                button.grid(row=i, column=j, padx=0, pady=0)
+                row.append(button)
             self.cells.append(row)
                 
         
 
-class CellFrame(tk.Frame):
+class CellButton(tk.Button):
     def __init__(self, parent):
         super().__init__(parent)
 
         self.frame = Frame(self, width=50, height=50, borderwidth=1, relief="solid")
         self.frame.grid(row=0, column=0, padx=0, pady=0)
+
+        self.button = Button(self.frame, width=5, height=3)
+        self.button.pack()
 
 if __name__ == "__main__":
     app = App()
